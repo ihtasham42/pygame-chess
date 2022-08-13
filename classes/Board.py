@@ -88,7 +88,11 @@ class Board():
         x, y = self.get_coordinates_from_position(click_position)
 
         if self.selected_chess_piece:
-            self.handle_movement(x, y)
+            chess_piece = self.get_chess_piece(x, y)
+            if chess_piece and chess_piece.team == self.teams_turn:
+                self.handle_selection(x, y)
+            else:
+                self.handle_movement(x, y)
         else:
             self.handle_selection(x, y)
 

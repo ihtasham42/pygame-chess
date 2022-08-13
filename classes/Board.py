@@ -16,8 +16,13 @@ class Board():
 
         self.selected_chess_piece = None
         self.teams_turn = constants.WHITE
+        self.set_window_caption()
 
         self.init_chess_pieces()
+
+    def set_window_caption(self):
+        team_name = "White" if self.teams_turn == constants.WHITE else "Black"
+        pygame.display.set_caption(f'Chess - {team_name}\'s turn')
 
     def init_chess_pieces(self):
         for col in range(constants.TILE_SIZE):
@@ -99,10 +104,13 @@ class Board():
         self.selected_chess_piece = chess_piece
 
     def switch_teams_turn(self):
-        if self.teams_turn == constants.BLACK:
-            self.teams_turn = constants.WHITE
-        else:
-            self.teams_turn = constants.BLACK
+        self.teams_turn = constants.BLACK if self.teams_turn == constants.WHITE else constants.WHITE
+        self.set_window_caption()
+
+    def movement_exists(self, x, y, movements):
+        for movement in movements:
+            if x == movement.x and y == movement.y:
+                return True
 
     def handle_movement(self, x, y):
         if self.selected_chess_piece.x == x and self.selected_chess_piece.y == y:
@@ -113,9 +121,8 @@ class Board():
             if len(movements) == 0:
                 return
 
-            for movement in movements:
-                if x != movement.x and y != movement.y:
-                    return 
+            if not self.movement_exists(x, y, movements):
+                return
             
             existing_chest_piece = self.get_chess_piece(x, y)
             if existing_chest_piece:

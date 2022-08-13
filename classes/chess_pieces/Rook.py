@@ -10,22 +10,21 @@ class Rook(ChessPiece):
     def get_movements(self):
         movements = []
 
-        move_range = 1 if self.moved else 2
+        for direction in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            x_direction, y_direction = direction
+            x_diff, y_diff = 0, 0
 
-        for i in range(move_range):
-            y = self.y - self.direction * (1 + i)
-            if self.can_move(self.x, y):
-                movements.append(Movement(self.x, y))
-            else:
-                break
-        
-        y = self.y - self.direction
-        x = self.x + 1
-        if self.can_capture(x, y):
-            movements.append(Movement(x, y))
+            while True:
+                x_diff += 1
+                y_diff += 1
+                x = self.x + x_diff * x_direction
+                y = self.y + y_diff * y_direction * self.direction
 
-        x = self.x - 1
-        if self.can_capture(x, y):
-            movements.append(Movement(x, y))
+                if self.can_move(x, y):
+                    movements.append(Movement(x, y))
+                else:
+                    if self.can_capture(x, y):
+                        movements.append(Movement(x, y))
+                    break
 
         return movements

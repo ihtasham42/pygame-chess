@@ -16,27 +16,30 @@ class Game():
 
     def run_game_loop(self):
         self.running = True
-        clock = pygame.time.Clock()
+        
 
         while True:
-            clock.tick(constants.FPS)
+            self.draw()
             self.handle_inputs()
             if not self.running:
                 break
-            self.update()
-            self.draw()
 
         pygame.quit()
 
     def handle_inputs(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.board.handle_click(event.pos)
+        clock = pygame.time.Clock()
+        input_loop_running = True
 
-    def update(self):
-        pass
+        while input_loop_running:
+            clock.tick(constants.FPS)
+            input_loop_running = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    self.board.handle_click(event.pos)
+                else:
+                    input_loop_running = True
 
     def draw(self):
         self.screen.fill(constants.BLACK)

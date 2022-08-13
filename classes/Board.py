@@ -25,9 +25,10 @@ class Board():
         pygame.display.set_caption(f'Chess - {team_name}\'s turn')
 
     def init_chess_pieces(self):
+        
+
         for col in range(constants.TILE_SIZE):
             self.chess_pieces.append(Pawn(self.game, col, 1, constants.BLACK))
-
             self.chess_pieces.append(Pawn(self.game, col, 6, constants.WHITE))
 
         self.chess_pieces.append(Rook(self.game, 0, 0, constants.BLACK))

@@ -1,9 +1,9 @@
 from classes.chess_pieces.ChessPiece import ChessPiece
 from classes.Movement import Movement
 
-class Pawn(ChessPiece):
+class Knight(ChessPiece):
     def __init__(self, game, x, y, team):
-        self.chess_piece_type = "pawn"
+        self.chess_piece_type = "knight"
         super().__init__(game, x, y, team)
         
 
@@ -29,4 +29,3 @@ class Pawn(ChessPiece):
             movements.append(Movement(x, y))
 
         return movements
-        

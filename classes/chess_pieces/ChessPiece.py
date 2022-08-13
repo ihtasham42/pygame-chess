@@ -3,14 +3,12 @@ import pygame
 
 class ChessPiece():
     def __init__(self, game, x, y, team):
-
         self.game = game 
         self.x = x
         self.y = y
         self.team = team
         self.moved = False
-        
-        self.chess_piece_type = "pawn"
+
         self.direction = self.get_direction()
         self.image = self.load_image()
         self.size = constants.TILE_SIZE / 2
@@ -33,7 +31,9 @@ class ChessPiece():
 
     def can_capture(self, x, y):
         board = self.game.board
-        return self.is_valid_tile(x, y) and board.get_chess_piece(x, y) 
+        chess_piece = board.get_chess_piece(x, y) 
+        if self.is_valid_tile(x, y) and chess_piece:
+            return chess_piece.team != self.team
 
     def is_valid_tile(self, x, y):
         return x >= 0 and y >= 0 and x < constants.BOARD_SIZE and y < constants.BOARD_SIZE
@@ -64,10 +64,25 @@ class ChessPiece():
                 rect
             )
 
+    def draw_highlight(self):
+        tile_color = constants.GREEN
+        rect = (
+            self.x * constants.TILE_SIZE, 
+            self.y * constants.TILE_SIZE,
+            constants.TILE_SIZE,
+            constants.TILE_SIZE
+        )
+
+        pygame.draw.rect(
+            self.game.screen, 
+            tile_color,
+            rect
+        )
+
     def draw(self):
         position = (
             self.x * constants.TILE_SIZE, 
             self.y * constants.TILE_SIZE,
         )
-        print(self.image, self.game.screen)
+
         self.game.screen.blit(self.image, position)

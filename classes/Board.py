@@ -1,7 +1,13 @@
-from ast import Constant
 import pygame
 import constants
 from classes.chess_pieces.Pawn import Pawn
+from classes.chess_pieces.Rook import Rook
+from classes.chess_pieces.Knight import Knight
+from classes.chess_pieces.Bishop import Bishop
+from classes.chess_pieces.King import King
+from classes.chess_pieces.Queen import Queen
+
+
 
 class Board():
     def __init__(self, game):
@@ -15,16 +21,33 @@ class Board():
 
     def init_chess_pieces(self):
         for col in range(constants.TILE_SIZE):
-            self.chess_pieces.append(Pawn(self.game, col, 0, constants.BLACK))
             self.chess_pieces.append(Pawn(self.game, col, 1, constants.BLACK))
 
             self.chess_pieces.append(Pawn(self.game, col, 6, constants.WHITE))
-            self.chess_pieces.append(Pawn(self.game, col, 7, constants.WHITE))
+
+        self.chess_pieces.append(Rook(self.game, 0, 0, constants.BLACK))
+        self.chess_pieces.append(Knight(self.game, 1, 0, constants.BLACK))
+        self.chess_pieces.append(Bishop(self.game, 2, 0, constants.BLACK))
+        self.chess_pieces.append(Queen(self.game, 3, 0, constants.BLACK))
+        self.chess_pieces.append(King(self.game, 4, 0, constants.BLACK))
+        self.chess_pieces.append(Bishop(self.game, 5, 0, constants.BLACK))
+        self.chess_pieces.append(Knight(self.game, 6, 0, constants.BLACK))
+        self.chess_pieces.append(Rook(self.game, 7, 0, constants.BLACK))
+
+        self.chess_pieces.append(Rook(self.game, 0, 7, constants.WHITE))
+        self.chess_pieces.append(Knight(self.game, 1, 7, constants.WHITE))
+        self.chess_pieces.append(Bishop(self.game, 2, 7, constants.WHITE))
+        self.chess_pieces.append(King(self.game, 3, 7, constants.WHITE))
+        self.chess_pieces.append(Queen(self.game, 4, 7, constants.WHITE))
+        self.chess_pieces.append(Bishop(self.game, 5, 7, constants.WHITE))
+        self.chess_pieces.append(Knight(self.game, 6, 7, constants.WHITE))
+        self.chess_pieces.append(Rook(self.game, 7, 7, constants.WHITE))
 
     def draw(self):
         self.draw_board()
         if self.selected_chess_piece:
             self.selected_chess_piece.draw_movements()
+            self.selected_chess_piece.draw_highlight()
         self.draw_chess_pieces()
 
     def draw_chess_pieces(self):
@@ -99,6 +122,5 @@ class Board():
                 existing_chest_piece.become_captured()
             
             self.selected_chess_piece.move(x, y)
-
             self.selected_chess_piece = None
             self.switch_teams_turn()

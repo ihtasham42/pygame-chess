@@ -12,13 +12,12 @@ class Rook(ChessPiece):
 
         for direction in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             x_direction, y_direction = direction
-            x_diff, y_diff = 0, 0
+            move_range = 0
 
             while True:
-                x_diff += 1
-                y_diff += 1
-                x = self.x + x_diff * x_direction
-                y = self.y + y_diff * y_direction * self.direction
+                move_range += 1
+                x = self.x + move_range * x_direction
+                y = self.y + move_range * y_direction * self.direction
 
                 if self.can_move(x, y):
                     movements.append(Movement(x, y))

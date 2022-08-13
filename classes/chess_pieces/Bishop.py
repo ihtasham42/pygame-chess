@@ -10,22 +10,20 @@ class Bishop(ChessPiece):
     def get_movements(self):
         movements = []
 
-        move_range = 1 if self.moved else 2
+        for direction in ((1, 1), (-1, -1), (1, -1), (-1, 1)):
+            x_direction, y_direction = direction
+            move_range = 0
 
-        for i in range(move_range):
-            y = self.y - self.direction * (1 + i)
-            if self.can_move(self.x, y):
-                movements.append(Movement(self.x, y))
-            else:
-                break
-        
-        y = self.y - self.direction
-        x = self.x + 1
-        if self.can_capture(x, y):
-            movements.append(Movement(x, y))
+            while True:
+                move_range += 1
+                x = self.x + move_range * x_direction
+                y = self.y + move_range * y_direction * self.direction
 
-        x = self.x - 1
-        if self.can_capture(x, y):
-            movements.append(Movement(x, y))
+                if self.can_move(x, y):
+                    movements.append(Movement(x, y))
+                else:
+                    if self.can_capture(x, y):
+                        movements.append(Movement(x, y))
+                    break
 
         return movements

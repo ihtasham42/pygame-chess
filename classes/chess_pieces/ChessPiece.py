@@ -3,38 +3,71 @@ import pygame
 
 class ChessPiece():
     def __init__(self, game, x, y, team):
-        pattern = [
-            [0, 1, 0],
-            [2, 1, 2],
-            [0, 3, 0]
-        ]
 
         self.game = game 
         self.x = x
         self.y = y
         self.team = team
-
+        self.moved = False
+        
+        self.chess_piece_type = "pawn"
+        self.direction = self.get_direction()
+        self.image = self.load_image()
         self.size = constants.TILE_SIZE / 2
 
+    def load_image(self):
+        directory = "sprites/"
+        team_file_name = "_white" if self.team == constants.WHITE else "_black"
+        file_name = directory + self.chess_piece_type + team_file_name + ".png"
+        image = pygame.image.load(file_name)
+        return pygame.transform.scale(image, (constants.TILE_SIZE, constants.TILE_SIZE))
+
+    def move(self, x, y):
+        self.x = x
+        self.y = y
+        self.moved = True
+
+    def can_move(self, x, y):
+        board = self.game.board
+        return self.is_valid_tile(x, y) and not board.get_chess_piece(x, y) 
+
+    def can_capture(self, x, y):
+        board = self.game.board
+        return self.is_valid_tile(x, y) and board.get_chess_piece(x, y) 
+
+    def is_valid_tile(self, x, y):
+        return x >= 0 and y >= 0 and x < constants.BOARD_SIZE and y < constants.BOARD_SIZE
+
+    def get_direction(self):
+        return 1 if self.team == constants.WHITE else -1
+
+    def get_movements(self):
+        pass
+
+    def become_captured(self):
+        chess_pieces = self.game.board.chess_pieces
+        chess_pieces.remove(self)        
+
+    def draw_movements(self):
+        for movement in self.get_movements():
+            tile_color = constants.BLUE
+            rect = (
+                movement.x * constants.TILE_SIZE, 
+                movement.y * constants.TILE_SIZE,
+                constants.TILE_SIZE,
+                constants.TILE_SIZE
+            )
+
+            pygame.draw.rect(
+                self.game.screen, 
+                tile_color,
+                rect
+            )
+
     def draw(self):
-        rect = (
-            self.x * constants.TILE_SIZE + self.size / 2, 
-            self.y * constants.TILE_SIZE + self.size / 2,
-            self.size,
-            self.size
-        ),
-
-        outline_color = constants.GREEN if self.game.board.selected_chess_piece == self else constants.GRAY
-
-        pygame.draw.rect(
-            self.game.screen, 
-            self.team,
-            rect
+        position = (
+            self.x * constants.TILE_SIZE, 
+            self.y * constants.TILE_SIZE,
         )
-
-        pygame.draw.rect(
-            self.game.screen, 
-            outline_color,
-            rect,
-            4
-        )
+        print(self.image, self.game.screen)
+        self.game.screen.blit(self.image, position)

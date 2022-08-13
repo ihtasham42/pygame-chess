@@ -1,5 +1,4 @@
 from classes.chess_pieces.ChessPiece import ChessPiece
-from classes.Movement import Movement
 
 class Queen(ChessPiece):
     def __init__(self, game, x, y, team):
@@ -25,10 +24,10 @@ class Queen(ChessPiece):
                 y = self.y + move_range * y_direction * self.direction
 
                 if self.can_move(x, y):
-                    movements.append(Movement(x, y))
+                    movements.append((x, y))
                 else:
                     if self.can_capture(x, y):
-                        movements.append(Movement(x, y))
+                        movements.append((x, y))
                     break
 
         return movements

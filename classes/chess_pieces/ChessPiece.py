@@ -21,6 +21,7 @@ class ChessPiece():
         return pygame.transform.scale(image, (constants.TILE_SIZE, constants.TILE_SIZE))
 
     def move(self, x, y):
+        self.game.board.set_chess_piece(None, self.x, self.y)
         self.game.board.set_chess_piece(self, x, y)
         self.x = x
         self.y = y
@@ -32,8 +33,10 @@ class ChessPiece():
 
     def can_capture(self, x, y):
         board = self.game.board
+        if not self.is_valid_tile(x, y):
+            return False
         chess_piece = board.get_chess_piece(x, y) 
-        if self.is_valid_tile(x, y) and chess_piece:
+        if chess_piece:
             return chess_piece.team != self.team
 
     def is_valid_tile(self, x, y):
@@ -49,12 +52,12 @@ class ChessPiece():
         self.game.board.set_chess_piece(None, self.x, self.y)     
 
     def draw_movements(self):
-        for movement in self.get_movements():
-            tile_color = constants.RED if self.can_capture(movement.x, movement.y) else constants.BLUE 
+        for (x, y) in self.get_movements():
+            tile_color = constants.RED if self.can_capture(x, y) else constants.BLUE 
 
             rect = (
-                movement.x * constants.TILE_SIZE, 
-                movement.y * constants.TILE_SIZE,
+                x * constants.TILE_SIZE, 
+                y * constants.TILE_SIZE,
                 constants.TILE_SIZE,
                 constants.TILE_SIZE
             )

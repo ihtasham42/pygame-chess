@@ -1,5 +1,4 @@
 from classes.chess_pieces.ChessPiece import ChessPiece
-from classes.Movement import Movement
 
 class Knight(ChessPiece):
     def __init__(self, game, x, y, team):
@@ -19,6 +18,6 @@ class Knight(ChessPiece):
 
         for (x, y) in coordinates:
             if self.can_move(x, y) or self.can_capture(x, y):
-                movements.append(Movement(x, y))
+                movements.append((x, y))
 
         return movements

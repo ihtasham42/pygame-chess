@@ -22,7 +22,6 @@ class Game():
             self.handle_inputs()
             if not self.running:
                 break
-
         pygame.quit()
 
     def handle_inputs(self):

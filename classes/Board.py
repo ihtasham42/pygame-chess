@@ -15,7 +15,7 @@ class Board():
         self.chess_pieces = []
 
         self.selected_chess_piece = None
-        self.teams_turn = constants.WHITE
+        self.teams_turn = constants.WHITE 
         self.set_window_caption()
 
         self.init_chess_pieces()
@@ -121,9 +121,16 @@ class Board():
         self.set_window_caption()
 
     def movement_exists(self, x, y, movements):
-        for movement in movements:
-            if x == movement.x and y == movement.y:
+        for (x_movement, y_movement) in movements:
+            if x == x_movement and y == y_movement:
                 return True
+
+    def get_king_piece(self, team):
+        for row in range(constants.BOARD_SIZE):
+            for col in range(constants.BOARD_SIZE):
+                pass 
+
+    
 
     def handle_movement(self, x, y):
         if self.selected_chess_piece.x == x and self.selected_chess_piece.y == y:

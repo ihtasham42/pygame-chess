@@ -1,5 +1,4 @@
 from classes.chess_pieces.ChessPiece import ChessPiece
-from classes.Movement import Movement
 
 class Pawn(ChessPiece):
     def __init__(self, game, x, y, team):
@@ -15,18 +14,18 @@ class Pawn(ChessPiece):
         for i in range(move_range):
             y = self.y - self.direction * (1 + i)
             if self.can_move(self.x, y):
-                movements.append(Movement(self.x, y))
+                movements.append((self.x, y))
             else:
                 break
         
         y = self.y - self.direction
         x = self.x + 1
         if self.can_capture(x, y):
-            movements.append(Movement(x, y))
+            movements.append((x, y))
 
         x = self.x - 1
         if self.can_capture(x, y):
-            movements.append(Movement(x, y))
+            movements.append((x, y))
 
         return movements
         

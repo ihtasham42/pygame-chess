@@ -25,29 +25,32 @@ class Board():
         pygame.display.set_caption(f'Chess - {team_name}\'s turn')
 
     def init_chess_pieces(self):
-        
+        for row in range(constants.BOARD_SIZE):
+            self.chess_pieces.append([])
+            for col in range(constants.BOARD_SIZE):
+                self.chess_pieces[row].append(None)
 
-        for col in range(constants.TILE_SIZE):
-            self.chess_pieces.append(Pawn(self.game, col, 1, constants.BLACK))
-            self.chess_pieces.append(Pawn(self.game, col, 6, constants.WHITE))
+        for col in range(constants.BOARD_SIZE):
+            self.set_chess_piece(Pawn(self.game, col, 1, constants.BLACK), col, 1)
+            self.set_chess_piece(Pawn(self.game, col, 6, constants.WHITE), col, 6)
 
-        self.chess_pieces.append(Rook(self.game, 0, 0, constants.BLACK))
-        self.chess_pieces.append(Knight(self.game, 1, 0, constants.BLACK))
-        self.chess_pieces.append(Bishop(self.game, 2, 0, constants.BLACK))
-        self.chess_pieces.append(Queen(self.game, 3, 0, constants.BLACK))
-        self.chess_pieces.append(King(self.game, 4, 0, constants.BLACK))
-        self.chess_pieces.append(Bishop(self.game, 5, 0, constants.BLACK))
-        self.chess_pieces.append(Knight(self.game, 6, 0, constants.BLACK))
-        self.chess_pieces.append(Rook(self.game, 7, 0, constants.BLACK))
+        self.set_chess_piece(Rook(self.game, 0, 0, constants.BLACK), 0, 0)
+        self.set_chess_piece(Knight(self.game, 1, 0, constants.BLACK), 1, 0)
+        self.set_chess_piece(Bishop(self.game, 2, 0, constants.BLACK), 2, 0)
+        self.set_chess_piece(Queen(self.game, 3, 0, constants.BLACK), 3, 0)
+        self.set_chess_piece(King(self.game, 4, 0, constants.BLACK), 4, 0)
+        self.set_chess_piece(Bishop(self.game, 5, 0, constants.BLACK), 5, 0)
+        self.set_chess_piece(Knight(self.game, 6, 0, constants.BLACK), 6, 0)
+        self.set_chess_piece(Rook(self.game, 7, 0, constants.BLACK), 7, 0)
 
-        self.chess_pieces.append(Rook(self.game, 0, 7, constants.WHITE))
-        self.chess_pieces.append(Knight(self.game, 1, 7, constants.WHITE))
-        self.chess_pieces.append(Bishop(self.game, 2, 7, constants.WHITE))
-        self.chess_pieces.append(King(self.game, 3, 7, constants.WHITE))
-        self.chess_pieces.append(Queen(self.game, 4, 7, constants.WHITE))
-        self.chess_pieces.append(Bishop(self.game, 5, 7, constants.WHITE))
-        self.chess_pieces.append(Knight(self.game, 6, 7, constants.WHITE))
-        self.chess_pieces.append(Rook(self.game, 7, 7, constants.WHITE))
+        self.set_chess_piece(Rook(self.game, 0, 7, constants.WHITE), 0, 7)
+        self.set_chess_piece(Knight(self.game, 1, 7, constants.WHITE), 1, 7)
+        self.set_chess_piece(Bishop(self.game, 2, 7, constants.WHITE), 2, 7)
+        self.set_chess_piece(King(self.game, 3, 7, constants.WHITE), 3, 7)
+        self.set_chess_piece(Queen(self.game, 4, 7, constants.WHITE), 4, 7)
+        self.set_chess_piece(Bishop(self.game, 5, 7, constants.WHITE), 5, 7)
+        self.set_chess_piece(Knight(self.game, 6, 7, constants.WHITE), 6, 7)
+        self.set_chess_piece(Rook(self.game, 7, 7, constants.WHITE), 7, 7)
 
     def draw(self):
         self.draw_board()
@@ -57,8 +60,12 @@ class Board():
         self.draw_chess_pieces()
 
     def draw_chess_pieces(self):
-        for chess_piece in self.chess_pieces:
-            chess_piece.draw()
+        for row in range(constants.BOARD_SIZE):
+            for col in range(constants.BOARD_SIZE):
+                chess_piece = self.get_chess_piece(col, row)
+                if chess_piece:
+                    chess_piece.draw()
+            
 
     def draw_board(self):
         for row in range(constants.BOARD_SIZE):
@@ -81,9 +88,10 @@ class Board():
         return click_position[0] // constants.TILE_SIZE, click_position[1] // constants.TILE_SIZE
 
     def get_chess_piece(self, x, y):
-        for chess_piece in self.chess_pieces:
-            if chess_piece.x == x and chess_piece.y == y:
-                return chess_piece 
+        return self.chess_pieces[y][x]
+
+    def set_chess_piece(self, chess_piece, x, y):
+        self.chess_pieces[y][x] = chess_piece
 
     def handle_click(self, click_position):
         x, y = self.get_coordinates_from_position(click_position)

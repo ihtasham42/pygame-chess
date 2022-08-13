@@ -21,6 +21,7 @@ class ChessPiece():
         return pygame.transform.scale(image, (constants.TILE_SIZE, constants.TILE_SIZE))
 
     def move(self, x, y):
+        self.game.board.set_chess_piece(self, x, y)
         self.x = x
         self.y = y
         self.moved = True
@@ -45,8 +46,7 @@ class ChessPiece():
         pass
 
     def become_captured(self):
-        chess_pieces = self.game.board.chess_pieces
-        chess_pieces.remove(self)        
+        self.game.board.set_chess_piece(None, self.x, self.y)     
 
     def draw_movements(self):
         for movement in self.get_movements():

@@ -16,7 +16,6 @@ class Game():
 
     def run_game_loop(self):
         self.running = True
-        
 
         while True:
             self.draw()

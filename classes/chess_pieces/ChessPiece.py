@@ -50,7 +50,8 @@ class ChessPiece():
 
     def draw_movements(self):
         for movement in self.get_movements():
-            tile_color = constants.BLUE
+            tile_color = constants.RED if self.can_capture(movement.x, movement.y) else constants.BLUE 
+
             rect = (
                 movement.x * constants.TILE_SIZE, 
                 movement.y * constants.TILE_SIZE,

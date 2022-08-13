@@ -24,6 +24,8 @@ class ChessPiece():
             self.size
         ),
 
+        outline_color = constants.GREEN if self.game.board.selected_chess_piece == self else constants.GRAY
+
         pygame.draw.rect(
             self.game.screen, 
             self.team,
@@ -32,7 +34,7 @@ class ChessPiece():
 
         pygame.draw.rect(
             self.game.screen, 
-            constants.GRAY,
+            outline_color,
             rect,
             4
         )

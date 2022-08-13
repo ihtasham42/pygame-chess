@@ -32,6 +32,8 @@ class Game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.board.handle_click(event.pos)
 
     def update(self):
         pass

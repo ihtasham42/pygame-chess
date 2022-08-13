@@ -10,22 +10,22 @@ class King(ChessPiece):
     def get_movements(self):
         movements = []
 
-        move_range = 1 if self.moved else 2
+        directions = [
+            (1, 0), (-1, 0), (0, 1), (0, -1),
+            (1, 1), (-1, -1), (1, -1), (-1, 1)
+        ]
 
-        for i in range(move_range):
-            y = self.y - self.direction * (1 + i)
-            if self.can_move(self.x, y):
-                movements.append(Movement(self.x, y))
+        for direction in directions:
+            x_direction, y_direction = direction
+
+            x = self.x + 1 * x_direction
+            y = self.y + 1 * y_direction * self.direction
+
+            if self.can_move(x, y):
+                movements.append(Movement(x, y))
             else:
-                break
-        
-        y = self.y - self.direction
-        x = self.x + 1
-        if self.can_capture(x, y):
-            movements.append(Movement(x, y))
-
-        x = self.x - 1
-        if self.can_capture(x, y):
-            movements.append(Movement(x, y))
+                if self.can_capture(x, y):
+                    movements.append(Movement(x, y))
+                
 
         return movements

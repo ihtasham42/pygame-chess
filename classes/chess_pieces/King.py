@@ -25,6 +25,11 @@ class King(ChessPiece):
             else:
                 if self.can_capture(x, y):
                     movements.append((x, y))
-                
 
         return movements
+
+    def is_king_in_check(self):
+        board = self.game.board
+        king_piece = board.get_king_piece(self.team)
+        opposing_movements = board.get_all_opposing_movements()
+        return (king_piece.x, king_piece.y) in opposing_movements

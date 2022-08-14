@@ -1,3 +1,4 @@
+from ast import comprehension
 import pygame
 import constants
 from classes.chess_pieces.Pawn import Pawn
@@ -56,7 +57,7 @@ class Board():
         self.draw_board()
         if self.selected_chess_piece:
             self.selected_chess_piece.draw_movements()
-            self.selected_chess_piece.draw_highlight()
+            self.selected_chess_piece.draw_selected()
         self.draw_chess_pieces()
 
     def draw_chess_pieces(self):
@@ -128,9 +129,22 @@ class Board():
     def get_king_piece(self, team):
         for row in range(constants.BOARD_SIZE):
             for col in range(constants.BOARD_SIZE):
-                pass 
+                chess_piece = self.get_chess_piece(col, row)
+                if chess_piece and chess_piece.team == team and chess_piece.type == "king":
+                    return chess_piece
 
-    
+    def get_all_opposing_movements(self):
+        opposing_team = constants.WHITE if self.teams_turn == constants.BLACK else constants.BLACK
+
+        movements = set([])
+
+        for row in range(constants.BOARD_SIZE):
+            for col in range(constants.BOARD_SIZE):
+                chess_piece = self.get_chess_piece(col, row)
+                if chess_piece and chess_piece.team == opposing_team:
+                    movements.add(chess_piece.get_movements())
+
+        return list(movements)
 
     def handle_movement(self, x, y):
         if self.selected_chess_piece.x == x and self.selected_chess_piece.y == y:
@@ -143,10 +157,6 @@ class Board():
 
             if not self.movement_exists(x, y, movements):
                 return
-            
-            existing_chest_piece = self.get_chess_piece(x, y)
-            if existing_chest_piece:
-                existing_chest_piece.become_captured()
             
             self.selected_chess_piece.move(x, y)
             self.selected_chess_piece = None

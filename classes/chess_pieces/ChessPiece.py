@@ -46,40 +46,29 @@ class ChessPiece():
         return 1 if self.team == constants.WHITE else -1
 
     def get_movements(self):
-        pass
+        pass 
 
-    def become_captured(self):
-        self.game.board.set_chess_piece(None, self.x, self.y)     
+    def draw_selected(self):
+        self.draw_highlight(self.x, self.y, constants.GREEN)
 
     def draw_movements(self):
         for (x, y) in self.get_movements():
-            tile_color = constants.RED if self.can_capture(x, y) else constants.BLUE 
+            if self.can_capture(x, y):
+                self.draw_highlight(x, y, constants.RED)
+            else:
+                self.draw_highlight(x, y, constants.BLUE)
 
-            rect = (
-                x * constants.TILE_SIZE, 
-                y * constants.TILE_SIZE,
-                constants.TILE_SIZE,
-                constants.TILE_SIZE
-            )
-
-            pygame.draw.rect(
-                self.game.screen, 
-                tile_color,
-                rect
-            )
-
-    def draw_highlight(self):
-        tile_color = constants.GREEN
+    def draw_highlight(self, x, y, highlight_color):
         rect = (
-            self.x * constants.TILE_SIZE, 
-            self.y * constants.TILE_SIZE,
+            x * constants.TILE_SIZE, 
+            y * constants.TILE_SIZE,
             constants.TILE_SIZE,
             constants.TILE_SIZE
         )
 
         pygame.draw.rect(
             self.game.screen, 
-            tile_color,
+            highlight_color,
             rect
         )
 
